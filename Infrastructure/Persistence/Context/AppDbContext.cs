@@ -14,6 +14,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Course>().ToContainer("Courses");
         modelBuilder.Entity<User>().ToContainer("Users");
         modelBuilder.Entity<Comment>().ToContainer("Comments");
+        modelBuilder.Entity<Book>().ToContainer("Books");
 
         base.OnModelCreating(modelBuilder);
     }
@@ -21,4 +22,5 @@ public class AppDbContext : DbContext
     public DbSet<Course> Courses { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<Comment> Comments { get; set; }
+    public DbSet<Book> Books { get; set; }
 }

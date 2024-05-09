@@ -1,3 +1,7 @@
+using Application.Models.Configurations;
+using Microsoft.EntityFrameworkCore;
+using Persistence.Context;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +10,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+var cosmos = new CosmosConfiguration();
+builder.Configuration.GetSection("Cosmos").Bind(cosmos);
+builder.Services.AddDbContext<AppDbContext>(op => op.UseCosmos(cosmos.Uri, cosmos.Key, cosmos.DatabaseName));
 
 var app = builder.Build();
 
