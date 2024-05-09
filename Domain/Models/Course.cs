@@ -10,6 +10,7 @@ public class Course : BaseEntity
     public List<string> Tags { get; set; }
     public int Rating { get; set; }
     public List<string> CommentIds { get; set; }
+    public List<string> BookIds { get; set; }
     public int LikeCount { get; set; }
     public int FavCount { get; set; }
     public string City { get; set; }
