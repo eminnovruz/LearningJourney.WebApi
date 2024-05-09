@@ -9,4 +9,5 @@ public class Book : BaseEntity
     public string AuthorFullName { get; set; }
     public int Price { get; set; }
     public int OwnerCount { get; set; }
+    public List<string> Tags { get; set; }
 }

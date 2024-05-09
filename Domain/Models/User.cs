@@ -18,4 +18,5 @@ public class User : BaseEntity
     public string Role { get; set; }
     public string RefreshToken { get; set; }
     public DateTime TokenExpireDate { get; set; }
+    public bool IsUserBanned { get; set; }
 }
