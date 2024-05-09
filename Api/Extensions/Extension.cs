@@ -14,7 +14,6 @@ public static class Extension
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IPassHashService, PassHashService>();
-        services.AddScoped<IJwtService, JwtService>();
         services.AddScoped<IAuthService, AuthService>();
 
         return services;
