@@ -28,6 +28,35 @@ public class WriteRepository<T> : IWriteRepository<T> where T : BaseEntity
         return entry.State == EntityState.Added;
     }
 
+    public bool Remove(T entity)
+    {
+        var entry = Table.Remove(entity);
+        return entry.State == EntityState.Deleted;
+    }
+
+    public async Task<bool> RemoveAsync(string id)
+    {
+        var entity = await Table.FirstOrDefaultAsync(x => x.Id == id);
+
+        if(entity is null)
+        {
+            throw new ArgumentNullException(nameof(entity));
+        }
+
+        var entry = Table.Remove(entity);
+        return entry.State == EntityState.Deleted;
+    }
+
+    public int SaveChanges()
+    {
+        return _context.SaveChanges();
+    }
+
+    public Task<int> SaveChangesAsync()
+    {
+        return _context.SaveChangesAsync();
+    }
+
     public bool Update(T Entity)
     {
         var entry = Table.Update(Entity);

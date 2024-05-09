@@ -16,4 +16,11 @@ public interface IWriteRepository<T> where T : BaseEntity
 
     // Remove methods
 
+    bool Remove(T entity);
+    Task<bool> RemoveAsync(string id);
+
+    // Save Changes
+
+    Task<int> SaveChangesAsync();
+    int SaveChanges();
 }
