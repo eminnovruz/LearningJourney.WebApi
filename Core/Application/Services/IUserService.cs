@@ -6,5 +6,5 @@ public interface IUserService
 {
     IEnumerable<CourseInfo> GetAllCourses();
     IEnumerable<CommentInfo> GetMyComments();
-
+    IEnumerable<BookInfo> GetAllBooks();
 }
