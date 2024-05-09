@@ -15,7 +15,7 @@ namespace Api.Controllers
             _userService = userService;
         }
 
-        [HttpGet("GetAlLBooks")]
+        [HttpGet("GetAllBooks")]
         public ActionResult<BookInfo> GetAllBooks()
         {
             try

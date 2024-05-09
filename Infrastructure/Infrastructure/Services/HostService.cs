@@ -47,6 +47,7 @@ public class HostService : IHostService
         
         user.IsUserBanned = true;
         var result = await _unitOfWork.WriteUserRepository.UpdateAsync(userId);
+        await _unitOfWork.WriteUserRepository.SaveChangesAsync();
         return result;
     }
 
@@ -55,9 +56,11 @@ public class HostService : IHostService
         throw new NotImplementedException();
     }
 
-    public Task<bool> RemoveBookAsync(string bookId)
+    public async Task<bool> RemoveBookAsync(string bookId)
     {
-        throw new NotImplementedException();
+        var result = await _unitOfWork.WriteBookRepository.RemoveAsync(bookId);
+        await _unitOfWork.WriteUserRepository.SaveChangesAsync();
+        return result;
     }
 
     public Task<bool> RemoveCourseAsync(string courseId)

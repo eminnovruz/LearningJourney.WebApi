@@ -27,5 +27,18 @@ namespace Api.Controllers
                 return BadRequest(exception.Message);
             }
         }
+
+        [HttpDelete("RemoveBook")]
+        public async Task<ActionResult<bool>> RemoveBook(string bookId)
+        {
+            try
+            {
+                return Ok(await _hostService.RemoveBookAsync(bookId));
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
+        }
     }
 }
