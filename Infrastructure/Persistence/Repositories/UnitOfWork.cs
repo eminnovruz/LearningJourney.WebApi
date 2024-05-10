@@ -7,12 +7,14 @@ namespace Persistence.Repositories;
 
 public class UnitOfWork : IUnitOfWork
 {
-    public UnitOfWork(IReadBookRepository readBookRepository, IWriteBookRepository writeBookRepository, IReadUserRepository readUserRepository, IWriteUserRepository writeUserRepository)
+    public UnitOfWork(IReadBookRepository readBookRepository, IWriteBookRepository writeBookRepository, IReadUserRepository readUserRepository, IWriteUserRepository writeUserRepository, IReadCourseRepository readCourseRepository, IWriteCourseRepository writeCourseRepository)
     {
         ReadBookRepository = readBookRepository;
         WriteBookRepository = writeBookRepository;
         ReadUserRepository = readUserRepository;
         WriteUserRepository = writeUserRepository;
+        ReadCourseRepository = readCourseRepository;
+        WriteCourseRepository = writeCourseRepository;
     }
 
     public IReadBookRepository ReadBookRepository { get; }

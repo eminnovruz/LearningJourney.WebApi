@@ -28,12 +28,38 @@ namespace Api.Controllers
             }
         }
 
+        [HttpPost("AddNewCourse")]
+        public async Task<ActionResult<bool>> AddNewCourse(AddCourseRequest request)
+        {
+            try
+            {
+                return Ok(await _hostService.AddCourseAsync(request));
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
+        }
+
         [HttpDelete("RemoveBook")]
         public async Task<ActionResult<bool>> RemoveBook(string bookId)
         {
             try
             {
                 return Ok(await _hostService.RemoveBookAsync(bookId));
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
+        }
+
+        [HttpDelete("RemoveCourse")]
+        public async Task<ActionResult<bool>> RemoveCourse(string courseId)
+        {
+            try
+            {
+                return Ok(await _hostService.RemoveCourseAsync(courseId));
             }
             catch (Exception exception)
             {

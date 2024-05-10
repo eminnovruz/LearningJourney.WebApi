@@ -2,6 +2,7 @@
 using Application.Repositories;
 using Application.Services;
 using Domain.Models;
+using System.Net;
 
 namespace Infrastructure.Services;
 
@@ -51,7 +52,9 @@ public class HostService : IHostService
             Tags = request.Tags,
         };
 
-        var result = await
+        var result = await _unitOfWork.WriteCourseRepository.AddAsync(newCourse);
+        await _unitOfWork.WriteCourseRepository.SaveChangesAsync();
+        return result;
     }
 
     public async Task<bool> BanUser(string userId)
@@ -80,8 +83,10 @@ public class HostService : IHostService
         return result;
     }
 
-    public Task<bool> RemoveCourseAsync(string courseId)
+    public async Task<bool> RemoveCourseAsync(string courseId)
     {
-        throw new NotImplementedException();
+        var result = await _unitOfWork.WriteCourseRepository.RemoveAsync(courseId);
+        await _unitOfWork.WriteCourseRepository.SaveChangesAsync();
+        return result;
     }
 }
