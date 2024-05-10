@@ -1,4 +1,5 @@
-﻿using Application.Models.Responses;
+﻿using Application.Models.Requests;
+using Application.Models.Responses;
 using Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,6 +35,19 @@ namespace Api.Controllers
             try
             {
                 return Ok(_userService.GetAllCourses());
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
+        }
+
+        [HttpPut("RateCourse")]
+        public ActionResult<bool> RateCourse(RateCourseRequest request)
+        {
+            try
+            {
+                return Ok(_userService.RateCourse(request));
             }
             catch (Exception exception)
             {

@@ -1,4 +1,5 @@
-﻿using Application.Models.Responses;
+﻿using Application.Models.Requests;
+using Application.Models.Responses;
 
 namespace Application.Services;
 
@@ -7,6 +8,5 @@ public interface IUserService
     IEnumerable<CourseInfo> GetAllCourses();
     IEnumerable<CommentInfo> GetMyComments();
     IEnumerable<BookInfo> GetAllBooks();
-    Task<bool> RateCourse(string courseId, int rate);
-    Task<bool> RateCourseByName(string courseName, int rate);
+    Task<bool> RateCourse(RateCourseRequest request);
 }

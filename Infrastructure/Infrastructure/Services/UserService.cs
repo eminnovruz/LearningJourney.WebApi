@@ -1,4 +1,5 @@
-﻿using Application.Models.Responses;
+﻿using Application.Models.Requests;
+using Application.Models.Responses;
 using Application.Repositories;
 using Application.Services;
 
@@ -37,13 +38,14 @@ public class UserService : IUserService
     {
         var courses = _unitOfWork.ReadCourseRepository.GetAll();
 
-        if(courses is null)
+        if (courses is null)
         {
-            throw new ArgumentNullException(nameof(courses));
+            throw new ArgumentNullException();
         }
 
         return courses.Select(item => new CourseInfo
         {
+            Id = item.Id,
             Name = item.Name,
             Street = item.Street,
             SubscriberCount = item.SubscriberCount,
@@ -55,7 +57,7 @@ public class UserService : IUserService
             LikeCount = item.LikeCount,
             Rating = item.Rating,
             Tags = item.Tags,
-        });
+        }).ToList();
     }
 
     public IEnumerable<CommentInfo> GetMyComments()
@@ -68,13 +70,21 @@ public class UserService : IUserService
         throw new NotImplementedException();
     }
 
-    public Task<bool> RateCourse(string courseId, int rate)
+    public async Task<bool> RateCourse(RateCourseRequest request)
     {
-        throw new NotImplementedException();
+        var course = await _unitOfWork.ReadCourseRepository.GetAsync(request.CourseId);
+
+        if (course is null)
+        {
+            throw new ArgumentNullException(nameof(course));
+        }
+
+        course.Rating = CalculateRating(course.RatingsCount, course.Rating, request.Rate);
+        var result = _unitOfWork.WriteCourseRepository.Update(course);
+        return result;
     }
 
-    public Task<bool> RateCourseByName(string courseName, int rate)
-    {
-        throw new NotImplementedException();
-    }
+    public int CalculateRating(int ratingCount, int rating, int newRate)
+        => (rating + newRate) / ratingCount++;
+
 }

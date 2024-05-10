@@ -9,6 +9,7 @@ public class Course : BaseEntity
     public int SubscriberCount { get; set; }
     public List<string> Tags { get; set; }
     public int Rating { get; set; }
+    public int RatingsCount { get; set; }
     public List<string> CommentIds { get; set; }
     public List<string> BookIds { get; set; }
     public int LikeCount { get; set; }
