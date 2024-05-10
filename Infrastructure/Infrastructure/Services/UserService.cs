@@ -35,10 +35,45 @@ public class UserService : IUserService
 
     public IEnumerable<CourseInfo> GetAllCourses()
     {
-        throw new NotImplementedException();
+        var courses = _unitOfWork.ReadCourseRepository.GetAll();
+
+        if(courses is null)
+        {
+            throw new ArgumentNullException(nameof(courses));
+        }
+
+        return courses.Select(item => new CourseInfo
+        {
+            Name = item.Name,
+            Street = item.Street,
+            SubscriberCount = item.SubscriberCount,
+            City = item.City,
+            CommentIds = item.CommentIds,
+            Description = item.Description,
+            FavCount = item.FavCount,
+            FullAddress = item.FullAddress,
+            LikeCount = item.LikeCount,
+            Rating = item.Rating,
+            Tags = item.Tags,
+        });
     }
 
     public IEnumerable<CommentInfo> GetMyComments()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> RateCourse()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> RateCourse(string courseId, int rate)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> RateCourseByName(string courseName, int rate)
     {
         throw new NotImplementedException();
     }

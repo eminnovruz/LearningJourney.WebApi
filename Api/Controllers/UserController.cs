@@ -27,5 +27,18 @@ namespace Api.Controllers
                 return BadRequest(exception.Message);
             }
         }
+
+        [HttpGet("GetAllCourses")]
+        public ActionResult<CourseInfo> GetAllCourses()
+        {
+            try
+            {
+                return Ok(_userService.GetAllCourses());
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
+        }
     }
 }

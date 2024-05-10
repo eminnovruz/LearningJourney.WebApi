@@ -7,4 +7,6 @@ public interface IUserService
     IEnumerable<CourseInfo> GetAllCourses();
     IEnumerable<CommentInfo> GetMyComments();
     IEnumerable<BookInfo> GetAllBooks();
+    Task<bool> RateCourse(string courseId, int rate);
+    Task<bool> RateCourseByName(string courseName, int rate);
 }
