@@ -32,9 +32,26 @@ public class HostService : IHostService
         return result;
     }
 
-    public Task<bool> AddCourseAsync(AddCourseRequest request)
+    public async Task<bool> AddCourseAsync(AddCourseRequest request)
     {
-        throw new NotImplementedException();
+        var newCourse = new Course()
+        {
+            Name = request.Name,
+            Street = request.Street,
+            SubscriberCount = 0,
+            BookIds = new List<string>(),
+            City = request.City,
+            CommentIds = new List<string>(),
+            Description = request.Description,
+            FavCount = 0,
+            FullAddress = request.FullAddress,
+            Id = Guid.NewGuid().ToString(),
+            LikeCount = 0,
+            Rating = 0,
+            Tags = request.Tags,
+        };
+
+        var result = await
     }
 
     public async Task<bool> BanUser(string userId)

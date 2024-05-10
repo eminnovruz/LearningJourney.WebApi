@@ -1,5 +1,6 @@
 ﻿using Application.Repositories;
 using Application.Repositories.BookRepository;
+using Application.Repositories.CourseRepository;
 using Application.Repositories.UserRepository;
 
 namespace Persistence.Repositories;
@@ -18,4 +19,6 @@ public class UnitOfWork : IUnitOfWork
     public IWriteBookRepository WriteBookRepository { get; }
     public IReadUserRepository ReadUserRepository  { get; }
     public IWriteUserRepository WriteUserRepository { get; }
+    public IReadCourseRepository ReadCourseRepository { get;  }
+    public IWriteCourseRepository WriteCourseRepository { get; }
 }

@@ -1,10 +1,12 @@
 ﻿using Application.Repositories;
 using Application.Repositories.BookRepository;
+using Application.Repositories.CourseRepository;
 using Application.Repositories.UserRepository;
 using Application.Services;
 using Infrastructure.Services;
 using Persistence.Repositories;
 using Persistence.Repositories.BookRepository;
+using Persistence.Repositories.CourseRepository;
 using Persistence.Repositories.UserRepository;
 
 namespace Api.Extensions;
@@ -28,6 +30,8 @@ public static class Extension
         services.AddScoped<IWriteBookRepository, WriteBookRepository>();
         services.AddScoped<IReadUserRepository, ReadUserRepository>();
         services.AddScoped<IWriteUserRepository, WriteUserRepository>();
+        services.AddScoped<IWriteCourseRepository, WriteCourseRepository>();
+        services.AddScoped<IReadCourseRepository, ReadCourseRepository>();
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 

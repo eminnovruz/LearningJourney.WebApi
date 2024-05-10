@@ -1,4 +1,5 @@
 ﻿using Application.Repositories.BookRepository;
+using Application.Repositories.CourseRepository;
 using Application.Repositories.UserRepository;
 
 namespace Application.Repositories;
@@ -10,4 +11,7 @@ public interface IUnitOfWork
 
     IReadUserRepository ReadUserRepository { get; }
     IWriteUserRepository WriteUserRepository { get; }
+
+    IReadCourseRepository ReadCourseRepository { get; }
+    IWriteCourseRepository WriteCourseRepository { get; }
 }
