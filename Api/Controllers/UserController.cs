@@ -68,5 +68,17 @@ namespace Api.Controllers
             }
         }
 
+        [HttpGet("GetMyComments")]
+        public IActionResult GetMyComments(string userId)
+        {
+            try
+            {
+                return Ok(_userService.GetMyComments(userId));
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
+        }
     }
 }

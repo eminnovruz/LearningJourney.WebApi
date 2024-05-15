@@ -62,9 +62,22 @@ public class UserService : IUserService
         }).ToList();
     }
 
-    public IEnumerable<CommentInfo> GetMyComments()
+    public IEnumerable<CommentInfo> GetMyComments(string userId)
     {
-        throw new NotImplementedException();
+        var comments = _unitOfWork.ReadCommentRepository.GetWhere(x => x.UserId == userId).ToList();
+
+        if(comments is null)
+        {
+            throw new ArgumentNullException();
+        }
+
+        return comments.Select(item => new CommentInfo()
+        {
+            CommentDate = item.CommentDate,
+            Content = item.Content,
+            LikeCount = item.LikeCount,
+            UserId = userId,
+        });
     }
 
     public async Task<bool> MakeCommentAsync(MakeCommentRequest request)
@@ -93,11 +106,6 @@ public class UserService : IUserService
     private async Task<bool> AddNewComment(Comment newComment)
     {
         return await _unitOfWork.WriteCommentRepository.AddAsync(newComment);
-    }
-
-    public Task<bool> RateCourse()
-    {
-        throw new NotImplementedException();
     }
 
     public async Task<bool> RateCourseAsync(RateCourseRequest request)
