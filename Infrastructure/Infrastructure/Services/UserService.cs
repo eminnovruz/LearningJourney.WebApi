@@ -81,7 +81,16 @@ public class UserService : IUserService
             UserId = request.UserId
         };
 
+        var user = await _unitOfWork.ReadUserRepository.GetAsync(request.UserId);
+        var course = await _unitOfWork.ReadCourseRepository.GetAsync(request.CourseId);
+
+        user.CommentIds.Add(newComment.Id);
+        course.CommentIds.Add(newComment.Id);
+
+        _unitOfWork.WriteUserRepository.Update(user);
+        _unitOfWork.WriteCourseRepository.Update(course); 
         var result = await _unitOfWork.WriteCommentRepository.AddAsync(newComment);
+        
         await _unitOfWork.WriteCommentRepository.SaveChangesAsync();
         return result;
     }
