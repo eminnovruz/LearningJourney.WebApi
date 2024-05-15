@@ -3,6 +3,7 @@ using Application.Models.Requests;
 using Application.Models.Responses;
 using Application.Repositories;
 using Application.Services;
+using Domain.Models;
 
 namespace Infrastructure.Services;
 
@@ -64,6 +65,25 @@ public class UserService : IUserService
     public IEnumerable<CommentInfo> GetMyComments()
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<bool> MakeCommentAsync(MakeCommentRequest request)
+    {
+        if (request is null)
+            throw new ArgumentNullException(nameof(request));
+
+        var newComment = new Comment()
+        {
+            Id = Guid.NewGuid().ToString(),
+            CommentDate = DateTime.Now,
+            Content = request.Content,
+            LikeCount = 0,
+            UserId = request.UserId
+        };
+
+        var result = await _unitOfWork.WriteCommentRepository.AddAsync(newComment);
+        await _unitOfWork.WriteCommentRepository.SaveChangesAsync();
+        return result;
     }
 
     public Task<bool> RateCourse()

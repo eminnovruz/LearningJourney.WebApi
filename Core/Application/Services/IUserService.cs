@@ -9,4 +9,5 @@ public interface IUserService
     IEnumerable<CommentInfo> GetMyComments();
     IEnumerable<BookInfo> GetAllBooks();
     Task<bool> RateCourseAsync(RateCourseRequest request);
+    Task<bool> MakeCommentAsync(MakeCommentRequest request);
 }

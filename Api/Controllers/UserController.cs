@@ -54,5 +54,19 @@ namespace Api.Controllers
                 return BadRequest(exception.Message);
             }
         }
+
+        [HttpPost("MakeComment")]
+        public async Task<IActionResult> MakeComment(MakeCommentRequest request)
+        {
+            try
+            {
+                return Ok(await _userService.MakeCommentAsync(request));
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
+        }
+
     }
 }
