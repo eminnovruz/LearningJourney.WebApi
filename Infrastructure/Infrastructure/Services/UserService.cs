@@ -1,4 +1,5 @@
-﻿using Application.Models.Requests;
+﻿using Application.Exceptions;
+using Application.Models.Requests;
 using Application.Models.Responses;
 using Application.Repositories;
 using Application.Services;
@@ -72,6 +73,11 @@ public class UserService : IUserService
 
     public async Task<bool> RateCourseAsync(RateCourseRequest request)
     {
+        if (request.Rate > 5 || request.Rate < 1) 
+        {
+            throw new InvalidRatingException("The rating value must be between 1 and 5. Please provide a valid rating.");
+        }
+
         var course = await _unitOfWork.ReadCourseRepository.GetAsync(request.CourseId);
 
         if (course is null)
