@@ -17,7 +17,7 @@ namespace Api.Controllers
         }
 
         [HttpGet("GetAllBooks")]
-        public ActionResult<BookInfo> GetAllBooks()
+        public IActionResult GetAllBooks()
         {
             try
             {
@@ -30,7 +30,7 @@ namespace Api.Controllers
         }
 
         [HttpGet("GetAllCourses")]
-        public ActionResult<CourseInfo> GetAllCourses()
+        public IActionResult GetAllCourses()
         {
             try
             {
@@ -43,11 +43,11 @@ namespace Api.Controllers
         }
 
         [HttpPut("RateCourse")]
-        public ActionResult<bool> RateCourse(RateCourseRequest request)
+        public async Task<IActionResult> RateCourse(RateCourseRequest request)
         {
             try
             {
-                return Ok(_userService.RateCourse(request));
+                return Ok(await _userService.RateCourseAsync(request));
             }
             catch (Exception exception)
             {

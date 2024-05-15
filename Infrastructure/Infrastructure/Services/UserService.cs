@@ -70,7 +70,7 @@ public class UserService : IUserService
         throw new NotImplementedException();
     }
 
-    public async Task<bool> RateCourse(RateCourseRequest request)
+    public async Task<bool> RateCourseAsync(RateCourseRequest request)
     {
         var course = await _unitOfWork.ReadCourseRepository.GetAsync(request.CourseId);
 
@@ -79,12 +79,10 @@ public class UserService : IUserService
             throw new ArgumentNullException(nameof(course));
         }
 
-        course.Rating = CalculateRating(course.RatingsCount, course.Rating, request.Rate);
+        course.Rating = course.RatingsCount == 0 ? request.Rate : (course.Rating + request.Rate) / course.RatingsCount++;
         var result = _unitOfWork.WriteCourseRepository.Update(course);
+        await _unitOfWork.WriteCourseRepository.SaveChangesAsync();
         return result;
     }
-
-    public int CalculateRating(int ratingCount, int rating, int newRate)
-        => (rating + newRate) / ratingCount++;
 
 }

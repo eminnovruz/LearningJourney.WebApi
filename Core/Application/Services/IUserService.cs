@@ -8,5 +8,5 @@ public interface IUserService
     IEnumerable<CourseInfo> GetAllCourses();
     IEnumerable<CommentInfo> GetMyComments();
     IEnumerable<BookInfo> GetAllBooks();
-    Task<bool> RateCourse(RateCourseRequest request);
+    Task<bool> RateCourseAsync(RateCourseRequest request);
 }
