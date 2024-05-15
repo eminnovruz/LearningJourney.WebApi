@@ -69,30 +69,30 @@ public class UserService : IUserService
 
     public async Task<bool> MakeCommentAsync(MakeCommentRequest request)
     {
-        if (request is null)
+        if (request == null)
             throw new ArgumentNullException(nameof(request));
-
-        var newComment = new Comment()
-        {
-            Id = Guid.NewGuid().ToString(),
-            CommentDate = DateTime.Now,
-            Content = request.Content,
-            LikeCount = 0,
-            UserId = request.UserId
-        };
 
         var user = await _unitOfWork.ReadUserRepository.GetAsync(request.UserId);
         var course = await _unitOfWork.ReadCourseRepository.GetAsync(request.CourseId);
 
-        user.CommentIds.Add(newComment.Id);
-        course.CommentIds.Add(newComment.Id);
+        if (user == null || course == null)
+            return false;
 
-        _unitOfWork.WriteUserRepository.Update(user);
-        _unitOfWork.WriteCourseRepository.Update(course); 
-        var result = await _unitOfWork.WriteCommentRepository.AddAsync(newComment);
-        
-        await _unitOfWork.WriteCommentRepository.SaveChangesAsync();
+        var newComment = CreateNewComment(request);
+
+        UpdateUserAndCourseComments(user, course, newComment);
+
+        var result = await AddNewComment(newComment);
+
+        await _unitOfWork.WriteCourseRepository.SaveChangesAsync();
+
         return result;
+    }
+
+
+    private async Task<bool> AddNewComment(Comment newComment)
+    {
+        return await _unitOfWork.WriteCommentRepository.AddAsync(newComment);
     }
 
     public Task<bool> RateCourse()
@@ -118,6 +118,26 @@ public class UserService : IUserService
         var result = _unitOfWork.WriteCourseRepository.Update(course);
         await _unitOfWork.WriteCourseRepository.SaveChangesAsync();
         return result;
+    }
+
+    // Helper Methods
+
+    private Comment CreateNewComment(MakeCommentRequest request)
+    {
+        return new Comment
+        {
+            Id = Guid.NewGuid().ToString(),
+            CommentDate = DateTime.Now,
+            Content = request.Content,
+            LikeCount = 0,
+            UserId = request.UserId
+        };
+    }
+
+    private void UpdateUserAndCourseComments(User user, Course course, Comment newComment)
+    {
+        user.CommentIds.Add(newComment.Id);
+        course.CommentIds.Add(newComment.Id);
     }
 
 }
