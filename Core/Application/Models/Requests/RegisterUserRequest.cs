@@ -1,4 +1,6 @@
-﻿namespace Application.Models.Requests;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Application.Models.Requests;
 
 public class RegisterUserRequest
 {
@@ -7,4 +9,5 @@ public class RegisterUserRequest
     public string Email { get; set; }
     public string PhoneNumber { get; set; }
     public string Password { get; set; }
+    public IFormFile ProfilePhoto { get; set; }
 }

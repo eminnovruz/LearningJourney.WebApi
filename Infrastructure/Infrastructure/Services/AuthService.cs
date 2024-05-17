@@ -12,12 +12,14 @@ public class AuthService : IAuthService
     private readonly IPassHashService _passHashService;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IJwtService _jwtService;
+    private readonly IBlobService _blobService;
 
-    public AuthService(IPassHashService passHashService, IUnitOfWork unitOfWork, IJwtService jwtService)
+    public AuthService(IPassHashService passHashService, IUnitOfWork unitOfWork, IJwtService jwtService, IBlobService blobService)
     {
         _passHashService = passHashService;
         _unitOfWork = unitOfWork;
         _jwtService = jwtService;
+        _blobService = blobService;
     }
 
     public AuthTokenInfo GenerateToken(User user)
@@ -95,6 +97,13 @@ public class AuthService : IAuthService
             throw new ArgumentException("This email is aldeady used");
         }
 
+        using (var stream = request.ProfilePhoto.OpenReadStream())
+        {
+            var fileName = Guid.NewGuid().ToString() + request.Email;
+            var contentType = request.ProfilePhoto.ContentType;
+            await _blobService.UploadFileAsync(stream, fileName, contentType);
+        }
+
         _passHashService.Create(request.Password, out byte[] passHash, out byte[] passSalt);
 
         var newUser = new User()
@@ -114,7 +123,7 @@ public class AuthService : IAuthService
             FavouritesIds = new List<string>(),
             IsEmailConfirmed = false,
             IsUserBanned = false,
-            ProfilePhotoId = "0",
+            ProfilePhoto = request.ProfilePhoto
         };
 
         var result = await _unitOfWork.WriteUserRepository.AddAsync(newUser);

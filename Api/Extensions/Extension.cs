@@ -23,12 +23,12 @@ public static class Extension
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddScoped<IUserService, UserService>();
-        services.AddScoped<IUserService, UserService>();
-        services.AddScoped<IPassHashService, PassHashService>();
-        services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IHostService, HostService>();
-        services.AddScoped<IJwtService, JwtService>();
+        services.AddScoped<IAuthService, AuthService>();
+
         services.AddScoped<IPassHashService, PassHashService>();
+        services.AddScoped<IJwtService, JwtService>();
+        services.AddScoped<IBlobService, BlobService>();
 
         return services;
     }

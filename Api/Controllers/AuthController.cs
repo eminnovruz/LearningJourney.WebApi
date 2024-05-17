@@ -47,7 +47,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpPost("refreshToken")]
+        [HttpPost("RefreshToken")]
         public async Task<ActionResult<AuthTokenInfo>> RefreshToken([FromBody] RefreshTokenRequest request)
         {
             try

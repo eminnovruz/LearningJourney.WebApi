@@ -1,4 +1,6 @@
 ﻿using Domain.Models.Common;
+using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Models;
 
@@ -7,9 +9,11 @@ public class User : BaseEntity
     public string Name { get; set; }
     public string Surname { get; set; }
     public string Email { get; set; }
+    public string Bio { get; set; }
     public string PhoneNumber { get; set; }
     public bool IsEmailConfirmed { get; set; }
-    public string ProfilePhotoId { get; set; }
+    [NotMapped]
+    public IFormFile ProfilePhoto { get; set; } 
     public List<string> SubscribedCourseIds { get; set; }
     public List<string> CommentIds { get; set; }
     public List<string> FavouritesIds { get; set; }
