@@ -1,9 +1,11 @@
-﻿using Application.Models.Requests;
+﻿using Application.Exceptions;
+using Application.Models.Requests;
 using Application.Models.Responses;
 using Application.Repositories;
 using Application.Services;
 using Azure.Core;
 using Domain.Models;
+using Serilog;
 
 namespace Infrastructure.Services;
 
@@ -27,22 +29,16 @@ public class AuthService : IAuthService
         var token = _jwtService.GenerateSecurityToken(user.Id, user.Email, user.Role);
         user.RefreshToken = token.RefreshToken;
         user.TokenExpireDate = token.ExpireDate;
+        Log.Information($"{user.Email} has generated token");
         return token;
     }
 
     public async Task<AuthTokenInfo> Login(LoginUserRequest request)
     {
-        var user = await _unitOfWork.ReadUserRepository.GetAsync(req => req.Email == request.Email);
-
-        if (user == null)
-        {
-            throw new ArgumentNullException("We cannot find an account related with this email.");
-        }
+        var user = await _unitOfWork.ReadUserRepository.GetAsync(req => req.Email == request.Email) ?? throw new UserNotFoundException();
 
         if (!_passHashService.ConfirmPasswordHash(request.Password, user.PassHash, user.PassSalt))
-        {
-            throw new ArgumentException("Wrong password.");
-        }
+            throw new WrongPasswordException();
 
         var token = GenerateToken(new User()
         {
@@ -58,6 +54,8 @@ public class AuthService : IAuthService
 
         await _unitOfWork.WriteUserRepository.UpdateAsync(user.Id);
         await _unitOfWork.WriteUserRepository.SaveChangesAsync();
+        Log.Information($"{user.Email} -- Login");
+
         return token;
     }
 
@@ -85,7 +83,7 @@ public class AuthService : IAuthService
             }
         }
 
-        throw new ArgumentException();
+        throw new Exception();
     }
 
     public async Task<bool> Register(RegisterUserRequest request)
@@ -93,9 +91,7 @@ public class AuthService : IAuthService
         var users = _unitOfWork.ReadUserRepository.GetAll().ToList();
 
         if (users.Any(user => user.Email == request.Email))
-        {
-            throw new ArgumentException("This email is aldeady used");
-        }
+            throw new EmailUsedException();
 
         using (var stream = request.ProfilePhoto.OpenReadStream())
         {
@@ -128,6 +124,8 @@ public class AuthService : IAuthService
 
         var result = await _unitOfWork.WriteUserRepository.AddAsync(newUser);
         await _unitOfWork.WriteUserRepository.SaveChangesAsync();
+        Log.Information($"{newUser.Email} -- Registered");
+
         return result;
     }
 }

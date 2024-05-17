@@ -86,6 +86,9 @@ public class UserService : IUserService
         if (user == null || course == null)
             throw new UserNotFoundException();
 
+        if (user.IsUserBanned)
+            throw new BannedUserAttempException();
+
         var newComment = CreateNewComment(request);
 
         UpdateUserAndCourseComments(user, course, newComment);
