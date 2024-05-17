@@ -11,6 +11,5 @@ public interface IHostService
     Task<bool> RemoveCourseAsync(string courseId);
 
     Task<bool> BanUser(string userId);
-
     Task<bool> ConfirmAndRemoveAccount(RemoveMyAccountRequest request);
 }

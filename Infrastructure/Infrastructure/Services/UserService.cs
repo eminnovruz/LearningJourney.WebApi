@@ -89,7 +89,7 @@ public class UserService : IUserService
         var course = await _unitOfWork.ReadCourseRepository.GetAsync(request.CourseId);
 
         if (user == null || course == null)
-            return false;
+            throw new UserNotFoundException("Cannot find user");
 
         var newComment = CreateNewComment(request);
 
@@ -111,22 +111,33 @@ public class UserService : IUserService
     public async Task<bool> RateCourseAsync(RateCourseRequest request)
     {
         if (request.Rate > 5 || request.Rate < 1) 
-        {
-            throw new InvalidRatingException("The rating value must be between 1 and 5. Please provide a valid rating.");
-        }
+            throw new InvalidRatingException();
 
-        var course = await _unitOfWork.ReadCourseRepository.GetAsync(request.CourseId);
-
-        if (course is null)
-        {
-            throw new ArgumentNullException(nameof(course));
-        }
+        var course = await _unitOfWork.ReadCourseRepository.GetAsync(request.CourseId)??
+            throw new CourseNotFoundException();
 
         course.Rating = course.RatingsCount == 0 ? request.Rate : (course.Rating + request.Rate) / course.RatingsCount++;
         var result = _unitOfWork.WriteCourseRepository.Update(course);
         await _unitOfWork.WriteCourseRepository.SaveChangesAsync();
         return result;
     }
+
+    public async Task<bool> AddCourseToFavourites(AddCourseToFavRequest request)
+    {
+        var course = await _unitOfWork.ReadCourseRepository.GetAsync(request.CourseId) ?? throw new NullReferenceException();
+        course.FavCount++;
+
+        var user = await _unitOfWork.ReadUserRepository.GetAsync(request.UserId);
+        user.FavouritesIds.Add(course.Id);
+
+        await _unitOfWork.WriteUserRepository.UpdateAsync(user.Id);
+        await _unitOfWork.WriteCourseRepository.UpdateAsync(course.Id);
+
+        await _unitOfWork.WriteUserRepository.SaveChangesAsync();
+
+        return true;
+    }
+
 
     // Helper Methods
 
@@ -147,5 +158,4 @@ public class UserService : IUserService
         user.CommentIds.Add(newComment.Id);
         course.CommentIds.Add(newComment.Id);
     }
-
 }

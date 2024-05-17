@@ -1,4 +1,5 @@
 using Api.Extensions;
+using Api.GlobalException;
 using Application.Models.Configurations;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Context;
@@ -15,6 +16,7 @@ builder.Services.AddServices();
 builder.Services.AddRepositories();
 builder.Services.AddAuthenticationAndAuthorization(builder.Configuration);
 builder.Services.AddSwagger();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 var cosmos = new CosmosConfiguration();
 builder.Configuration.GetSection("Cosmos").Bind(cosmos);
 builder.Services.Configure<BlobStorageConfiguration>(builder.Configuration.GetSection("BlobStorage"));
@@ -30,6 +32,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseExceptionHandler("/err");
 
 app.UseAuthorization();
 

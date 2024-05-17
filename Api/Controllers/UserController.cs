@@ -45,29 +45,14 @@ namespace Api.Controllers
         [HttpPut("RateCourse")]
         public async Task<IActionResult> RateCourse(RateCourseRequest request)
         {
-            try
-            {
-                return Ok(await _userService.RateCourseAsync(request));
-            }
-            catch (Exception exception)
-            {
-                return BadRequest(exception.Message);
-            }
+            return Ok(await _userService.RateCourseAsync(request));
         }
 
         [HttpPost("MakeComment")]
         public async Task<IActionResult> MakeComment(MakeCommentRequest request)
         {
-            try
-            {
-                return Ok(await _userService.MakeCommentAsync(request));
-            }
-            catch (Exception exception)
-            {
-                return BadRequest(exception.Message);
-            }
+            return Ok(await _userService.MakeCommentAsync(request));
         }
-
 
         [HttpGet("GetMyComments")]
         public IActionResult GetMyComments(string userId)
@@ -75,6 +60,19 @@ namespace Api.Controllers
             try
             {
                 return Ok(_userService.GetMyComments(userId));
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
+        }
+
+        [HttpPut("AddCourseToFavourites")]
+        public IActionResult AddCourseToFavourites(AddCourseToFavRequest request)
+        {
+            try
+            {
+                return Ok(_userService.AddCourseToFavourites(request));
             }
             catch (Exception exception)
             {

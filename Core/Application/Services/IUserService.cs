@@ -10,4 +10,5 @@ public interface IUserService
     IEnumerable<BookInfo> GetAllBooks();
     Task<bool> RateCourseAsync(RateCourseRequest request);
     Task<bool> MakeCommentAsync(MakeCommentRequest request);
+    Task<bool> AddCourseToFavourites(AddCourseToFavRequest request);
 }
