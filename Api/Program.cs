@@ -1,19 +1,23 @@
 using Api.Extensions;
 using Api.GlobalException;
 using Application.Models.Configurations;
+using Infrastructure.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Context;
+using Persistence.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddServices();
-builder.Services.AddRepositories();
+
+builder.Services
+    .AddInfrastructureServices()
+    .AddPersistenceRepositories();
+
+
 builder.Services.AddAuthenticationAndAuthorization(builder.Configuration);
 builder.Services.AddSwagger();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();

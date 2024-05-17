@@ -1,54 +1,15 @@
 ﻿using Application.Models.Configurations;
-using Application.Repositories;
-using Application.Repositories.BookRepository;
-using Application.Repositories.CommentRepository;
-using Application.Repositories.CourseRepository;
-using Application.Repositories.UserRepository;
 using Application.Services;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Persistence.Repositories;
-using Persistence.Repositories.BookRepository;
-using Persistence.Repositories.CommentRepository;
-using Persistence.Repositories.CourseRepository;
-using Persistence.Repositories.UserRepository;
 using System.Text;
 
 namespace Api.Extensions;
 
-public static class Extension
+public static class SwaggerExtensions
 {
-    public static IServiceCollection AddServices(this IServiceCollection services)
-    {
-        services.AddScoped<IUserService, UserService>();
-        services.AddScoped<IHostService, HostService>();
-        services.AddScoped<IAuthService, AuthService>();
-
-        services.AddScoped<IPassHashService, PassHashService>();
-        services.AddScoped<IJwtService, JwtService>();
-        services.AddScoped<IBlobService, BlobService>();
-
-        return services;
-    }
-
-    public static IServiceCollection AddRepositories(this IServiceCollection services)
-    {
-        services.AddScoped<IReadBookRepository, ReadBookRepository>();
-        services.AddScoped<IWriteBookRepository, WriteBookRepository>();
-        services.AddScoped<IReadUserRepository, ReadUserRepository>();
-        services.AddScoped<IWriteUserRepository, WriteUserRepository>();
-        services.AddScoped<IWriteCourseRepository, WriteCourseRepository>();
-        services.AddScoped<IReadCourseRepository, ReadCourseRepository>();
-        services.AddScoped<IReadCommentRepository, ReadCommentRepository>();
-        services.AddScoped<IWriteCommentRepository, WriteCommentRepository>();
-
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-        return services;
-    }
-
     public static IServiceCollection AddSwagger(this IServiceCollection services)
     {
         services.AddEndpointsApiExplorer();
