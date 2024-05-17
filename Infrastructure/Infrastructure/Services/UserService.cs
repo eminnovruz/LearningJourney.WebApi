@@ -38,12 +38,7 @@ public class UserService : IUserService
 
     public IEnumerable<CourseInfo> GetAllCourses()
     {
-        var courses = _unitOfWork.ReadCourseRepository.GetAll();
-
-        if (courses is null)
-        {
-            throw new ArgumentNullException();
-        }
+        var courses = _unitOfWork.ReadCourseRepository.GetAll() ?? throw new CourseNotFoundException();
 
         return courses.Select(item => new CourseInfo
         {
@@ -83,13 +78,13 @@ public class UserService : IUserService
     public async Task<bool> MakeCommentAsync(MakeCommentRequest request)
     {
         if (request == null)
-            throw new ArgumentNullException(nameof(request));
+            throw new ArgumentNullException();
 
         var user = await _unitOfWork.ReadUserRepository.GetAsync(request.UserId);
         var course = await _unitOfWork.ReadCourseRepository.GetAsync(request.CourseId);
 
         if (user == null || course == null)
-            throw new UserNotFoundException("Cannot find user");
+            throw new UserNotFoundException();
 
         var newComment = CreateNewComment(request);
 
@@ -101,7 +96,6 @@ public class UserService : IUserService
 
         return result;
     }
-
 
     private async Task<bool> AddNewComment(Comment newComment)
     {
@@ -122,12 +116,12 @@ public class UserService : IUserService
         return result;
     }
 
-    public async Task<bool> AddCourseToFavourites(AddCourseToFavRequest request)
+    public async Task<bool> AddCourseToFavouritesAsync(AddCourseToFavRequest request)
     {
-        var course = await _unitOfWork.ReadCourseRepository.GetAsync(request.CourseId) ?? throw new NullReferenceException();
+        var course = await _unitOfWork.ReadCourseRepository.GetAsync(request.CourseId) ?? throw new CourseNotFoundException();
         course.FavCount++;
 
-        var user = await _unitOfWork.ReadUserRepository.GetAsync(request.UserId);
+        var user = await _unitOfWork.ReadUserRepository.GetAsync(request.UserId) ?? throw new UserNotFoundException();
         user.FavouritesIds.Add(course.Id);
 
         await _unitOfWork.WriteUserRepository.UpdateAsync(user.Id);

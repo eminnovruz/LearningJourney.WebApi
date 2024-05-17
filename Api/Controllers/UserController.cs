@@ -68,16 +68,9 @@ namespace Api.Controllers
         }
 
         [HttpPut("AddCourseToFavourites")]
-        public IActionResult AddCourseToFavourites(AddCourseToFavRequest request)
+        public async Task<IActionResult> AddCourseToFavourites(AddCourseToFavRequest request)
         {
-            try
-            {
-                return Ok(_userService.AddCourseToFavourites(request));
-            }
-            catch (Exception exception)
-            {
-                return BadRequest(exception.Message);
-            }
+            return Ok(await _userService.AddCourseToFavouritesAsync(request));
         }
     }
 }
