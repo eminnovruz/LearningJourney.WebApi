@@ -5,11 +5,14 @@ using Infrastructure.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Context;
 using Persistence.DependencyInjection;
+using Presentation;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddApplicationPart(typeof(AssemblyReference).Assembly);
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

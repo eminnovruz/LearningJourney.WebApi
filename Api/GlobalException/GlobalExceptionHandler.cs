@@ -9,7 +9,7 @@ public class GlobalExceptionHandler : IExceptionHandler
     {
         (int statusCode, string errorMessage) = exception switch
         {
-            InvalidRatingException => (StatusCodes.Status406NotAcceptable, "Rating must be between 1 and 5, Please provide correct number"),
+            InvalidRatingException => (StatusCodes.Status404NotFound, "Rating must be between 1 and 5, Please provide correct number"),
             UserNotFoundException => (StatusCodes.Status404NotFound, "Cannot find user, check user credentials"),
             CourseNotFoundException => (StatusCodes.Status404NotFound, "Cannot find course, check course credentials"),
             _ => (500, "Error occured, Try again.")
