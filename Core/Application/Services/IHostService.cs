@@ -10,6 +10,6 @@ public interface IHostService
     Task<bool> AddCourseAsync(AddCourseRequest request);
     Task<bool> RemoveCourseAsync(string courseId);
 
-    Task<bool> BanUser(string userId);
-    Task<bool> ConfirmAndRemoveAccount(RemoveMyAccountRequest request);
+    Task<bool> BanUserAsync(BanUserRequest request);
+    Task<bool> ConfirmAndRemoveAccountAsync(RemoveMyAccountRequest request);
 }

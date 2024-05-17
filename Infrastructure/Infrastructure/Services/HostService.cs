@@ -2,6 +2,7 @@
 using Application.Repositories;
 using Application.Services;
 using Domain.Models;
+using Serilog;
 using System.Net;
 
 namespace Infrastructure.Services;
@@ -57,21 +58,24 @@ public class HostService : IHostService
         return result;
     }
 
-    public async Task<bool> BanUser(string userId)
+    public async Task<bool> BanUserAsync(BanUserRequest request)
     {
-        var user = await _unitOfWork.ReadUserRepository.GetAsync(userId);
+        var user = await _unitOfWork.ReadUserRepository.GetAsync(request.UserId);
         if(user is null)
         {
             throw new ArgumentNullException(nameof(user));
         }
         
         user.IsUserBanned = true;
-        var result = await _unitOfWork.WriteUserRepository.UpdateAsync(userId);
+        var result = await _unitOfWork.WriteUserRepository.UpdateAsync(request.UserId);
         await _unitOfWork.WriteUserRepository.SaveChangesAsync();
+
+        Log.Information($"{user.Email} is banned, reason: \n {request.ReasonContent}");
+
         return result;
     }
 
-    public Task<bool> ConfirmAndRemoveAccount(RemoveMyAccountRequest request)
+    public Task<bool> ConfirmAndRemoveAccountAsync(RemoveMyAccountRequest request)
     {
         throw new NotImplementedException();
     }

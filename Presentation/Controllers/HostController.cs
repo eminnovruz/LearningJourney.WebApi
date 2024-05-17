@@ -17,52 +17,30 @@ public class HostController : ApiController
     [HttpPost("AddNewBook")]
     public async Task<ActionResult<bool>> AddNewBook(AddBookRequest request)
     {
-        try
-        {
-            return Ok(await _hostService.AddBookAsync(request));
-        }
-        catch (Exception exception)
-        {
-            return BadRequest(exception.Message);
-        }
+        return Ok(await _hostService.AddBookAsync(request));
     }
 
     [HttpPost("AddNewCourse")]
     public async Task<ActionResult<bool>> AddNewCourse(AddCourseRequest request)
     {
-        try
-        {
-            return Ok(await _hostService.AddCourseAsync(request));
-        }
-        catch (Exception exception)
-        {
-            return BadRequest(exception.Message);
-        }
+        return Ok(await _hostService.AddCourseAsync(request));
     }
 
     [HttpDelete("RemoveBook")]
     public async Task<ActionResult<bool>> RemoveBook(string bookId)
     {
-        try
-        {
-            return Ok(await _hostService.RemoveBookAsync(bookId));
-        }
-        catch (Exception exception)
-        {
-            return BadRequest(exception.Message);
-        }
+        return Ok(await _hostService.RemoveBookAsync(bookId));
     }
 
     [HttpDelete("RemoveCourse")]
     public async Task<ActionResult<bool>> RemoveCourse(string courseId)
     {
-        try
-        {
-            return Ok(await _hostService.RemoveCourseAsync(courseId));
-        }
-        catch (Exception exception)
-        {
-            return BadRequest(exception.Message);
-        }
+        return Ok(await _hostService.RemoveCourseAsync(courseId));
+    }
+
+    [HttpPut("BanUser")]
+    public async Task<ActionResult<bool>> BanUser(BanUserRequest request)
+    {
+        return Ok(await _hostService.BanUserAsync(request));
     }
 }

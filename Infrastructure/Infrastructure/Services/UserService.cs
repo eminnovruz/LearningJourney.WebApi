@@ -82,12 +82,12 @@ public class UserService : IUserService
 
         var user = await _unitOfWork.ReadUserRepository.GetAsync(request.UserId);
         var course = await _unitOfWork.ReadCourseRepository.GetAsync(request.CourseId);
+        
+        if (user.IsUserBanned)
+            throw new BannedUserAttempException();
 
         if (user == null || course == null)
             throw new UserNotFoundException();
-
-        if (user.IsUserBanned)
-            throw new BannedUserAttempException();
 
         var newComment = CreateNewComment(request);
 
