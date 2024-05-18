@@ -9,6 +9,8 @@ using Persistence.Repositories.CommentRepository;
 using Persistence.Repositories.CourseRepository;
 using Persistence.Repositories.UserRepository;
 using Persistence.Repositories;
+using Application.Repositories.BannedUserRepository;
+using Persistence.Repositories.BannedUserRepository;
 
 namespace Persistence.DependencyInjection;
 
@@ -27,6 +29,9 @@ public static class PersistenceDependencyInjection
 
         services.AddScoped<IReadCommentRepository, ReadCommentRepository>();
         services.AddScoped<IWriteCommentRepository, WriteCommentRepository>();
+
+        services.AddScoped<IReadBannedUserRepository, ReadBannedUserRepository>();
+        services.AddScoped<IWriteBannedUserRepository, WriteBannedUserRepository>();
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 

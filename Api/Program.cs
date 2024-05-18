@@ -1,6 +1,7 @@
 using Api.Extensions;
 using Api.GlobalException;
 using Application.Models.Configurations;
+using Infrastructure.BackgroundServices;
 using Infrastructure.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Context;
@@ -18,9 +19,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services
-    .AddInfrastructureServices()
-    .AddPersistenceRepositories();
-
+    .AddPersistenceRepositories()
+    .AddInfrastructureServices();
 
 builder.Services.AddAuthenticationAndAuthorization(builder.Configuration);
 builder.Services.AddSwagger();

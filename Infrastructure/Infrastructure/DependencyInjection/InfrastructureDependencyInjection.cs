@@ -1,4 +1,5 @@
 ﻿using Application.Services;
+using Infrastructure.BackgroundServices;
 using Infrastructure.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System.Runtime.CompilerServices;
@@ -22,6 +23,10 @@ public static class InfrastructureDependencyInjection
         services.AddScoped<IJwtService, JwtService>();
 
         services.AddScoped<IBlobService, BlobService>();
+
+        // hosted services
+
+        services.AddHostedService<ForbiddenCommentChecker>();
 
         return services;
     }
