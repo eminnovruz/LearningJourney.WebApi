@@ -1,7 +1,6 @@
 using Api.Extensions;
 using Api.GlobalException;
 using Application.Models.Configurations;
-using Infrastructure.BackgroundServices;
 using Infrastructure.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Context;
@@ -21,8 +20,6 @@ builder.Services.AddSwaggerGen();
 builder.Services
     .AddPersistenceRepositories()
     .AddInfrastructureServices();
-
-builder.Services.AddHostedService<UnbanUserChecker>();
 
 builder.Services.AddAuthenticationAndAuthorization(builder.Configuration);
 builder.Services.AddSwagger();

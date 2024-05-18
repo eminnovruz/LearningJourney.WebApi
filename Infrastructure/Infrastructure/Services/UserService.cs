@@ -4,6 +4,7 @@ using Application.Models.Responses;
 using Application.Repositories;
 using Application.Services;
 using Domain.Models;
+using Serilog;
 
 namespace Infrastructure.Services;
 
@@ -155,4 +156,45 @@ public class UserService : IUserService
         user.CommentIds.Add(newComment.Id);
         course.CommentIds.Add(newComment.Id);
     }
+
+    public Task<IEnumerable<CourseInfo>> SearchCoursesAsync(string text)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<IEnumerable<BookInfo>> SearchBooksAsync(string text)
+    {
+        var books = await _unitOfWork.ReadBookRepository.GetAllAsync() ?? throw new NullReferenceException();
+
+        var searchResultBooks = new List<BookInfo>();
+
+        foreach (var item in books)
+        {
+            text = text.ToLower();
+            var name = item.Name.ToLower();
+
+            if (name == text || name.Contains(text) || item.AuthorFullName.ToLower() == text || item.AuthorFullName.ToLower().Contains(text) || item.Tags.Contains(text))
+            {
+                AddFoundedBookAndLog(searchResultBooks, item);
+            }
+        }
+
+        return searchResultBooks;
+    }
+
+    private static void AddFoundedBookAndLog(List<BookInfo> searchResultBooks, Book item)
+    {
+        searchResultBooks.Add(new BookInfo()
+        {
+            AuthorFullName = item.AuthorFullName,
+            Description = item.Description,
+            Id = item.Id,
+            Name = item.Name,
+            OwnerCount = item.OwnerCount,
+            Price = item.Price,
+        });
+
+        Log.Information("Searched book found and added to results");
+    }
+
 }

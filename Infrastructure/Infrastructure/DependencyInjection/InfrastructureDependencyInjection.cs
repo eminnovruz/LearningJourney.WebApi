@@ -1,5 +1,4 @@
 ﻿using Application.Services;
-using Infrastructure.BackgroundServices;
 using Infrastructure.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System.Runtime.CompilerServices;

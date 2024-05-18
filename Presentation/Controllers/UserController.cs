@@ -49,4 +49,10 @@ public sealed class UserController : ApiController
     {
         return Ok(await _userService.AddCourseToFavouritesAsync(request));
     }
+
+    [HttpGet("SearchBook")]
+    public async Task<IActionResult> SearchBooks(string text)
+    {
+        return Ok(await _userService.SearchBooksAsync(text));
+    }
 }
