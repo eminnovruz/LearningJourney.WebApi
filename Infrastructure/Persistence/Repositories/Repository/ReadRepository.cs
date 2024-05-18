@@ -29,7 +29,7 @@ public class ReadRepository<T> : IReadRepository<T> where T : BaseEntity
         return entity;
     }
 
-    public IEnumerable<T> GetAll(bool tracking = true)
+    public  IEnumerable<T> GetAll(bool tracking = true)
     {
         if(tracking)
         {
@@ -37,6 +37,11 @@ public class ReadRepository<T> : IReadRepository<T> where T : BaseEntity
         }
 
         return Table.AsNoTracking().ToList();
+    }
+
+    public async Task<IEnumerable<T>> GetAllAsync() // extra method for background services
+    {
+        return await Table.ToListAsync();
     }
 
     public async Task<T> GetAsync(string id)

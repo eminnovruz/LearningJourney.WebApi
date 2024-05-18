@@ -33,7 +33,7 @@ public static class PersistenceDependencyInjection
         services.AddScoped<IReadBannedUserRepository, ReadBannedUserRepository>();
         services.AddScoped<IWriteBannedUserRepository, WriteBannedUserRepository>();
 
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddTransient<IUnitOfWork, UnitOfWork>();
 
         return services;
     }

@@ -26,7 +26,6 @@ public static class InfrastructureDependencyInjection
 
         // hosted services
 
-        services.AddHostedService<ForbiddenCommentChecker>();
 
         return services;
     }

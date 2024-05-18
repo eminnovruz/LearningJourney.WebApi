@@ -22,6 +22,8 @@ builder.Services
     .AddPersistenceRepositories()
     .AddInfrastructureServices();
 
+builder.Services.AddHostedService<UnbanUserChecker>();
+
 builder.Services.AddAuthenticationAndAuthorization(builder.Configuration);
 builder.Services.AddSwagger();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();

@@ -1,4 +1,5 @@
-﻿using Application.Models.Requests;
+﻿using Application.Exceptions;
+using Application.Models.Requests;
 using Application.Repositories;
 using Application.Services;
 using Domain.Models;
@@ -60,19 +61,30 @@ public class HostService : IHostService
 
     public async Task<bool> BanUserAsync(BanUserRequest request)
     {
-        var user = await _unitOfWork.ReadUserRepository.GetAsync(request.UserId);
-        if(user is null)
-        {
-            throw new ArgumentNullException(nameof(user));
-        }
-        
+        var user = await _unitOfWork.ReadUserRepository.GetAsync(request.UserId) ?? throw new UserNotFoundException();
+
         user.IsUserBanned = true;
-        var result = await _unitOfWork.WriteUserRepository.UpdateAsync(request.UserId);
+        BannedUser newBan = CreateNewBan(request);
+
+        await _unitOfWork.WriteUserRepository.UpdateAsync(request.UserId);
+        var result = await _unitOfWork.WriteBannedUserRepository.AddAsync(newBan);
         await _unitOfWork.WriteUserRepository.SaveChangesAsync();
 
         Log.Information($"{user.Email} is banned, reason: \n {request.ReasonContent}");
 
         return result;
+    }
+
+    private BannedUser CreateNewBan(BanUserRequest request)
+    {
+        return new BannedUser()
+        {
+            Id = Guid.NewGuid().ToString(),
+            BannedDate = DateTime.Now,
+            ReasonContent = request.ReasonContent,
+            UnbanDate = request.UnbanWithHours ? DateTime.Now.AddHours(request.UnbanAfterHours) : DateTime.Now.AddMonths(request.UnbanAfterMonths),
+            UserId = request.UserId,
+        };
     }
 
     public Task<bool> ConfirmAndRemoveAccountAsync(RemoveMyAccountRequest request)

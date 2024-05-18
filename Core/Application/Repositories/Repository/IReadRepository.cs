@@ -6,6 +6,9 @@ namespace Application.Repositories.Repository;
 public interface IReadRepository<T> where T : BaseEntity
 {
     IEnumerable<T> GetAll(bool tracking = true);
+
+    Task<IEnumerable<T>> GetAllAsync(); // Extra method for background services
+
     IEnumerable<T> GetWhere(Expression<Func<T, bool>> expression);
 
     Task<T> GetAsync(string id);
