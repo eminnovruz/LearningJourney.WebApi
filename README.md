@@ -35,4 +35,4 @@ I have used for this project:
 - Custom Exceptions
 - Global Exception Handler
 
-# DataBase and Blob Storages are not avaiable, make your own configurations if you want to test application :-)
+## ⚠️DataBase and Blob Storages are not avaiable, make your own configurations if you want to test application :-)
